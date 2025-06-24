@@ -1,0 +1,55 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: roommate
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - app_network
+
+  node-web:
+    build: .
+    container_name: node-web
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    depends_on:
+      - mysql
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: 1234
+      DB_NAME: roommate
+    networks:
+      - app_network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: 1234
+    networks:
+      - app_network
+
+volumes:
+  db-data:
+
+networks:
+  app_network:
+    driver: bridge
+
+
+
+

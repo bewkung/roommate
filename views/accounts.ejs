@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <script src="https://cdn.tailwindcss.com"></script>
+    <title>ข้อมูลผู้ใช้</title>
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/accounts.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-image-container">
+                <img src="https://via.placeholder.com/150" alt="Profile Picture" class="">
+            </div>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="fullName">ชื่อผู้ใช้</label>
+                    <input type="text" id="fullName" value="">
+                </div>
+                <div class="form-group">
+                    <label for="nickname">ชื่อเล่น</label>
+                    <input type="text" id="nickname" value="">
+                </div>
+                <div class="form-group">
+                    <label for="studentId">รหัสนักศึกษา</label>
+                    <input type="text" id="studentId" value="">
+                </div>
+                <div class="form-group">
+                    <label for="age">อายุ</label>
+                    <input type="number" id="age" value="">
+                </div>
+                <div class="form-group">
+                    <label for="year">ชั้นปี</label>
+                    <input type="number" id="year" value="">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-grid-full-width">
+            <div class="form-group">
+                <label for="email">อีเมล</label>
+                <input type="email" id="email" value="">
+            </div>
+            <div class="form-group">
+                <label for="phone">เบอร์โทร</label>
+                <input type="tel" id="phone" value="">
+            </div>
+        </div>
+
+        <div class="form-grid-full-width">
+            <div class="form-group">
+                <label for="faculty">คณะ</label>
+                <select id="faculty">
+                    <option value="วิทยาการสารสนเทศ" selected>วิทยาการสารสนเทศ</option>
+                    <option value="วิศวกรรมศาสตร์">วิศวกรรมศาสตร์</option>
+                    <option value="บริหารธุรกิจ">บริหารธุรกิจ</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="major">สาขา</label>
+                <select id="major">
+                    <option value="เทคโนโลยีสารสนเทศ" selected>เทคโนโลยีสารสนเทศ</option>
+                    <option value="วิทยาการคอมพิวเตอร์">วิทยาการคอมพิวเตอร์</option>
+                    <option value="วิศวกรรมซอฟต์แวร์">วิศวกรรมซอฟต์แวร์</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="gender">เพศ</label>
+                <select id="gender">
+                    <option value="ชาย" selected>ชาย</option>
+                    <option value="หญิง">หญิง</option>
+                    <option value="อื่นๆ">อื่นๆ</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group full-width">
+            <label for="characteristics">ลักษณะนิสัย/ความชอบ</label>
+            <select id="characteristics">
+                <option value="" disabled selected>เลือกหรือไม่เลือกก็ได้</option>
+                <option value="ชอบอ่านหนังสือ">ชอบอ่านหนังสือ</option>
+                <option value="ชอบเล่นกีฬา">ชอบเล่นกีฬา</option>
+                <option value="ชอบดูหนัง">ชอบดูหนัง</option>
+                <option value="ชอบฟังเพลง">ชอบฟังเพลง</option>
+            </select>
+        </div>
+
+        <div class="button-group">
+            <button class="save-button" onclick="saveData()">บันทึกข้อมูล</button>
+            <button class="edit-button" onclick="editData()">แก้ไขข้อมูล</button>
+        </div>
+    </div>
+    
+
+</body>
+</html>
+
+

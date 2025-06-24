@@ -1,0 +1,181 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    /* เปลี่ยนจาก justify-content: center; align-items: center; */
+    display: flex; /* ทำให้ body เป็น flex container */
+    flex-direction: column; /* จัดเรียงลูกๆ ในแนวตั้ง (Header จะอยู่บน, เนื้อหาหลักอยู่ถัดไป) */
+    min-height: 100vh; /* ทำให้ body สูงเต็มหน้าจอ */
+    margin: 0; /* ลบ margin เริ่มต้นของ body ออก */
+    padding: 0; /* ลบ padding เริ่มต้นของ body ออก */
+}
+
+/* .container คือฟอร์มของคุณ เราจะให้มันอยู่กึ่งกลางในพื้นที่ที่เหลือ */
+.container {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    /* เพิ่ม margin auto ในแนวตั้งและแนวนอน เพื่อให้ container อยู่ตรงกลางของพื้นที่ที่เหลือ */
+    margin: auto; /* ทำให้ container อยู่กึ่งกลางทั้งแนวตั้งและแนวนอน */
+    /* หรือถ้าต้องการให้ชิดขอบบนของพื้นที่ที่เหลือ ให้ใช้ margin-top: auto; margin-bottom: 0; */
+}
+
+.profile-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.profile-image-container {
+    flex-shrink: 0;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px 20px;
+    flex-grow: 1;
+}
+
+.form-grid-full-width {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box; /* Ensures padding doesn't increase total width */
+    -webkit-appearance: none; /* Remove default browser styling for select */
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #f9f9f9; /* Default background for disabled/readonly */
+}
+
+/* Custom arrow for select */
+.form-group select {
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000%22%20d%3D%22M287%20197.8L147.2%2038.5c-3.2-3.2-8.3-3.2-11.5%200L5.3%20197.8c-3.2%203.2-3.2%208.3%200%2011.5l11.5%2011.5c3.2%203.2%208.3%203.2%2011.5%200l118.9-118.9L254%20220.8c3.2%203.2%208.3%203.2%2011.5%200l11.5-11.5c3.2-3.2%203.2-8.3%200-11.5z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+    padding-right: 30px; /* Make space for the arrow */
+}
+
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1; /* Spans across all columns */
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.button-group button {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.save-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.save-button:hover {
+    background-color: #0056b3;
+}
+
+.edit-button {
+    background-color: #6c757d;
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: #5a6268;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .form-grid, .form-grid-full-width {
+        grid-template-columns: 1fr; /* Stack columns on smaller screens */
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .button-group button {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+/* Style for read-only/disabled fields */
+input[readonly], select[disabled] {
+    background-color: #e9ecef; /* Lighter background for read-only/disabled */
+    cursor: default;
+    opacity: 0.8;
+}
+

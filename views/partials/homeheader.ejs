@@ -1,0 +1,24 @@
+<nav class="flex items-center justify-between bg-white p-4 shadow-md sticky top-0 z-50">
+    <div class="flex items-center space-x-2">
+        <img src="/images/LOGO.png" alt="RoomMate" class="h-8">
+        <h1 class="text-lg font-bold">ROOM MATE</h1>
+    </div>
+    <div class="space-x-4">
+        <a href="/home" class="text-gray-700">Home</a>
+        <a href="#" class="text-gray-700">Match</a>
+        <a href="#" class="text-gray-700">Messages</a>
+        <a href="#" class="text-gray-700">User Guides</a>
+        <a href="/about-me" class="text-gray-700">Post</a>
+    </div>
+    <div class="flex items-center space-x-4">
+        <a href="/accounts" class="flex items-center space-x-2 text-gray-700 hover:text-blue-500">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 19.5v-1.125A2.625 2.625 0 0 0 13.875 15.75h-3.75A2.625 2.625 0 0 0 7.5 18.375V19.5M12 11.25a3.375 3.375 0 1 0 0-6.75 3.375 3.375 0 0 0 0 6.75Z"/>
+            </svg>
+            <p><%= session.user.email %></p>
+        </a>
+        <form action="/logout" method="get">
+            <button type="submit" class="px-4 py-2 bg-gray-700 text-white rounded">Logout</button>
+        </form>
+    </div>
+</nav>

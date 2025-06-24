@@ -1,0 +1,80 @@
+/* Global Styles */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Footer Styles */
+  footer {
+    background-color: #343a40; /* สีพื้นหลังของ footer */
+    color: #ffffff;
+    padding: 20px 0;
+    text-align: center;
+  }
+  
+  .social_icon {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .social_icon li {
+    display: inline;
+  }
+  
+  .social_icon a {
+    color: #ffffff;
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .social_icon a:hover {
+    color: #f1c40f; /* เปลี่ยนสีเมื่อ hover */
+  }
+  
+  .menu {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .menu li {
+    display: inline;
+  }
+  
+  .menu a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s;
+  }
+  
+  .menu a:hover {
+    color: #f1c40f; /* เปลี่ยนสีเมื่อ hover */
+  }
+  
+  .copyright {
+    margin-top: 10px;
+    font-size: 0.875rem;
+    color: #dcdcdc; /* สีข้อความลิขสิทธิ์ */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .social_icon {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .menu {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }

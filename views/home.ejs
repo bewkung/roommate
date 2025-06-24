@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/content.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles_pretty.css">
+    <style>
+        
+    </style>
+    <title>RoomMate Finder</title>
+</head>
+<body class="bg-gray-100">
+    <%- include('partials/header') %>
+
+
+<!-- Search Section -->
+<div class="container-search flex justify-center mt-10">
+    <form action="/search" method="get" class="flex items-center space-x-2 w-full max-w-xl">
+        <input type="text" name="q" id="search-input" placeholder="ค้นหา..." class="w-full p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-400">
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-r-md hover:bg-blue-700 transition" id="search-btn" disabled>Search</button>
+    </form>
+</div>
+
+<!-- Filters Section (เพศ) -->
+<div class="container-filters mt-3 text-center">
+    <label><input type="radio" name="filter" value="all" checked> All Fields</label>
+    <label><input type="radio" name="filter" value="male"> ชาย</label>
+    <label><input type="radio" name="filter" value="female"> หญิง</label>
+    <label><input type="radio" name="filter" value="other"> LGBTQ+</label>
+</div>
+
+<!-- Add JavaScript for Search Form Validation -->
+<script>
+    // ทำการตรวจสอบช่องค้นหาทุกครั้งที่ผู้ใช้พิมพ์ข้อมูล
+    document.getElementById('search-input').addEventListener('input', function() {
+        const searchValue = document.getElementById('search-input').value;
+        const searchBtn = document.getElementById('search-btn');
+
+        // หากช่องค้นหามีข้อมูล ปุ่มจะใช้งานได้
+        if (searchValue.trim() !== '') {
+            searchBtn.disabled = false; // เปิดใช้งานปุ่ม
+        } else {
+            searchBtn.disabled = true; // ปิดใช้งานปุ่ม
+        }
+    });
+
+    // ฟังก์ชันตรวจสอบค่าในฟอร์มก่อนการส่ง
+    function validateForm() {
+        const searchValue = document.getElementById('search-input').value;
+        if (searchValue.trim() === '') {
+            alert('กรุณากรอกคำค้นหา');
+            return false; // ห้ามส่งฟอร์มหากไม่มีข้อมูล
+        }
+        return true; // ส่งฟอร์มหากมีข้อมูล
+    }
+
+</script>
+
+    
+
+    
+
+    <%- include('partials/footer') %>
+</body>
+</html>
