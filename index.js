@@ -18,7 +18,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(session({
   secret: 'secret',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false,
 }));
 app.use(flash());
 
@@ -27,6 +27,7 @@ app.use((req, res, next) => {
   res.locals.validationErrors = req.flash('validationErrors');
   next();
 });
+
 
 app.get('/', (req, res) => {
   res.render('index');
@@ -60,8 +61,8 @@ app.post('/user/register', async (req, res) => {
       return res.redirect('/register');
     }
 
-    const hash = await bcrypt.hash(password, 10); 
-    const regisDate = new Date(); 
+    const hash = await bcrypt.hash(password, 10);
+    const regisDate = new Date();
 
     await db.execute(
       'INSERT INTO register (email, password, regis_date) VALUES (?, ?, ?)',
@@ -83,6 +84,7 @@ app.post('/user/login', async (req, res) => {
     const [rows] = await db.execute('SELECT * FROM register WHERE email = ?', [email]);
     if (rows.length > 0 && await bcrypt.compare(password, rows[0].password)) {
       req.session.user = rows[0];
+      console.log(rows[0]);
       return res.redirect('/home');
     }
     req.flash('validationErrors', ['อีเมลหรือรหัสผ่านไม่ถูกต้อง']);
@@ -100,6 +102,55 @@ app.get('/logout', (req, res) => {
     res.clearCookie('connect.sid');
     res.redirect('/');
   });
+});
+
+//accounts เพิ่มข้อมูล 
+app.post('/accounts', upload.none(), async (req, res) => {
+  const {
+    fullname,
+    nickname,
+    student_id,
+    age,
+    year,
+    phone,
+    gender,
+    image_url,
+    status
+  } = req.body;
+
+  const image = image_url ? image_url : null;
+
+  const register_id = req.session.user?.register_id;
+
+
+  if (!register_id) {
+    return res.status(401).send('กรุณาเข้าสู่ระบบก่อน');
+  }
+
+  try {
+    await db.execute(
+      `INSERT INTO accounts 
+        (fullname, nickname, age, phone, status, gender, student_id, year, image, register_id) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        fullname || null,
+        nickname || null,
+        age || null,
+        phone || null,
+        status || null,
+        gender || null,
+        student_id || null,
+        year || null,
+        image,
+        register_id
+      ]
+    );
+
+    res.redirect('/home');
+  } catch (error) {
+    console.error('Error saving account:', error);
+    res.status(500).send('เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+  }
 });
 
 

@@ -2,11 +2,16 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f0f2f5;
     /* เปลี่ยนจาก justify-content: center; align-items: center; */
-    display: flex; /* ทำให้ body เป็น flex container */
-    flex-direction: column; /* จัดเรียงลูกๆ ในแนวตั้ง (Header จะอยู่บน, เนื้อหาหลักอยู่ถัดไป) */
-    min-height: 100vh; /* ทำให้ body สูงเต็มหน้าจอ */
-    margin: 0; /* ลบ margin เริ่มต้นของ body ออก */
-    padding: 0; /* ลบ padding เริ่มต้นของ body ออก */
+    display: flex;
+    /* ทำให้ body เป็น flex container */
+    flex-direction: column;
+    /* จัดเรียงลูกๆ ในแนวตั้ง (Header จะอยู่บน, เนื้อหาหลักอยู่ถัดไป) */
+    min-height: 100vh;
+    /* ทำให้ body สูงเต็มหน้าจอ */
+    margin: 0;
+    /* ลบ margin เริ่มต้นของ body ออก */
+    padding: 0;
+    /* ลบ padding เริ่มต้นของ body ออก */
 }
 
 /* .container คือฟอร์มของคุณ เราจะให้มันอยู่กึ่งกลางในพื้นที่ที่เหลือ */
@@ -21,7 +26,8 @@ body {
     flex-direction: column;
     gap: 20px;
     /* เพิ่ม margin auto ในแนวตั้งและแนวนอน เพื่อให้ container อยู่ตรงกลางของพื้นที่ที่เหลือ */
-    margin: auto; /* ทำให้ container อยู่กึ่งกลางทั้งแนวตั้งและแนวนอน */
+    margin: auto;
+    /* ทำให้ container อยู่กึ่งกลางทั้งแนวตั้งและแนวนอน */
     /* หรือถ้าต้องการให้ชิดขอบบนของพื้นที่ที่เหลือ ให้ใช้ margin-top: auto; margin-bottom: 0; */
 }
 
@@ -83,11 +89,14 @@ body {
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1em;
-    box-sizing: border-box; /* Ensures padding doesn't increase total width */
-    -webkit-appearance: none; /* Remove default browser styling for select */
+    box-sizing: border-box;
+    /* Ensures padding doesn't increase total width */
+    -webkit-appearance: none;
+    /* Remove default browser styling for select */
     -moz-appearance: none;
     appearance: none;
-    background-color: #f9f9f9; /* Default background for disabled/readonly */
+    background-color: #f9f9f9;
+    /* Default background for disabled/readonly */
 }
 
 /* Custom arrow for select */
@@ -96,7 +105,8 @@ body {
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 12px;
-    padding-right: 30px; /* Make space for the arrow */
+    padding-right: 30px;
+    /* Make space for the arrow */
 }
 
 
@@ -108,7 +118,8 @@ body {
 }
 
 .form-group.full-width {
-    grid-column: 1 / -1; /* Spans across all columns */
+    grid-column: 1 / -1;
+    /* Spans across all columns */
 }
 
 .button-group {
@@ -132,12 +143,13 @@ body {
     color: white;
 }
 
+
 .save-button:hover {
     background-color: #0056b3;
 }
 
 .edit-button {
-    background-color: #6c757d;
+    background-color: #dff649;
     color: white;
 }
 
@@ -153,8 +165,10 @@ body {
         text-align: center;
     }
 
-    .form-grid, .form-grid-full-width {
-        grid-template-columns: 1fr; /* Stack columns on smaller screens */
+    .form-grid,
+    .form-grid-full-width {
+        grid-template-columns: 1fr;
+        /* Stack columns on smaller screens */
     }
 
     .container {
@@ -173,9 +187,34 @@ body {
 }
 
 /* Style for read-only/disabled fields */
-input[readonly], select[disabled] {
-    background-color: #e9ecef; /* Lighter background for read-only/disabled */
+input[readonly],
+select[disabled] {
+    background-color: #e9ecef;
+    /* Lighter background for read-only/disabled */
     cursor: default;
     opacity: 0.8;
 }
 
+.profile-image-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+.profile-image-container img:hover {
+    opacity: 0.8;
+}
+
+.hidden-input {
+    display: none;
+}
+
+.image-label-text {
+    color: #3B82F6;
+    /* สีฟ้า */
+    text-align: center;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+}
