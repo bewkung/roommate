@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 const db = require('./config/database');
 
 const app = express();
-const upload = multer();
+
 
 
 app.use(express.urlencoded({ extended: true }));
@@ -27,6 +27,20 @@ app.use((req, res, next) => {
   res.locals.validationErrors = req.flash('validationErrors');
   next();
 });
+
+
+// กำหนด storage และ path เก็บไฟล์
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/images/'); // โฟลเดอร์เก็บรูปภาพ
+  },
+  filename: (req, file, cb) => {
+    const uniqueName = Date.now() + '-' + file.originalname;
+    cb(null, uniqueName);
+  }
+});
+
+const upload = multer({ storage: storage });
 
 
 app.get('/', (req, res) => {
@@ -55,7 +69,7 @@ app.get('/accounts', (req, res) => {
 app.post('/user/register', async (req, res) => {
   const { email, password } = req.body;
   try {
-    const [rows] = await db.execute('SELECT * FROM register WHERE email = ?', [email]);
+    const [rows] = await db.execute('SELECT * FROM Register WHERE email = ?', [email]);
     if (rows.length > 0) {
       req.flash('validationErrors', ['อีเมลนี้ถูกใช้ไปแล้ว']);
       return res.redirect('/register');
@@ -65,7 +79,7 @@ app.post('/user/register', async (req, res) => {
     const regisDate = new Date();
 
     await db.execute(
-      'INSERT INTO register (email, password, regis_date) VALUES (?, ?, ?)',
+      'INSERT INTO Register (email, password, regis_date) VALUES (?, ?, ?)',
       [email, hash, regisDate]
     );
 
@@ -81,7 +95,7 @@ app.post('/user/register', async (req, res) => {
 app.post('/user/login', async (req, res) => {
   const { email, password } = req.body;
   try {
-    const [rows] = await db.execute('SELECT * FROM register WHERE email = ?', [email]);
+    const [rows] = await db.execute('SELECT * FROM Register WHERE email = ?', [email]);
     if (rows.length > 0 && await bcrypt.compare(password, rows[0].password)) {
       req.session.user = rows[0];
       console.log(rows[0]);
@@ -104,36 +118,36 @@ app.get('/logout', (req, res) => {
   });
 });
 
-//accounts เพิ่มข้อมูล 
-app.post('/accounts', upload.none(), async (req, res) => {
+app.post('/accounts', upload.single('profileImage'), async (req, res) => {
   const {
-    fullname,
+    first_name,
+    last_name,
     nickname,
     student_id,
     age,
     year,
     phone,
     gender,
-    image_url,
+    Faculty_id,
+    Majors_id,
     status
   } = req.body;
 
-  const image = image_url ? image_url : null;
+  const image = req.file ? '/images/' + req.file.filename : null;
+  const Register_id = req.session.user?.Register_id;
 
-  const register_id = req.session.user?.register_id;
-
-
-  if (!register_id) {
+  if (!Register_id) {
     return res.status(401).send('กรุณาเข้าสู่ระบบก่อน');
   }
 
   try {
     await db.execute(
-      `INSERT INTO accounts 
-        (fullname, nickname, age, phone, status, gender, student_id, year, image, register_id) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO Accounts 
+        (first_name, last_name, nickname, age, phone, status, gender, student_id, year, image, Register_id, Faculty_id, Majors_id) 
+        VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        fullname || null,
+        first_name || null,
+        last_name || null,
         nickname || null,
         age || null,
         phone || null,
@@ -142,7 +156,9 @@ app.post('/accounts', upload.none(), async (req, res) => {
         student_id || null,
         year || null,
         image,
-        register_id
+        Register_id,
+        Faculty_id,
+        Majors_id
       ]
     );
 
@@ -154,10 +170,9 @@ app.post('/accounts', upload.none(), async (req, res) => {
 });
 
 
+
+
 // Server
 app.listen(3000, () => {
   console.log('Server running on port 3000');
 });
-
-
-

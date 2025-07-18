@@ -14,45 +14,81 @@
 <body>
     <%- include('partials/homeheader') %>
         <div class="container">
-            <form action="/accounts" method="POST">
+            <form action="/accounts" method="POST" enctype="multipart/form-data">
                 <div class="profile-header">
-                    <div class="form-group full-width">
-                        <label for="image_url">ลิงก์รูปภาพ (URL)</label>
-                        <input type="url" id="image_url" name="image_url" placeholder="https://example.com/image.jpg">
-                        <img id="preview" src="" alt="Preview"
-                            style="max-width: 200px; margin-top: 10px; display: none;">
+                    <div class="profile-image-container flex flex-col items-center text-center">
+                        <input type="file" name="profileImage" accept="image/*">
                     </div>
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="fullName">ชื่อนามสกุล</label>
-                            <input type="text" id="fullname" name="fullname" value="">
+                            <label for="fullName">ชื่อ</label>
+                            <input type="text" id="first_name" name="first_name" value="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullName">นามสกุล</label>
+                            <input type="text" id="last_name" name="last_name" value="" required>
                         </div>
                         <div class="form-group">
                             <label for="nickname">ชื่อเล่น</label>
-                            <input type="text" id="nickname" name="nickname" value="">
+                            <input type="text" id="nickname" name="nickname" value="" required>
                         </div>
                         <div class="form-group">
                             <label for="studentId">รหัสนักศึกษา</label>
-                            <input type="text" id="student_id" name="student_id" value="">
+                            <input type="number" id="student_id" name="student_id" value="" required>
                         </div>
                         <div class="form-group">
                             <label for="age">อายุ</label>
-                            <input type="number" id="age" name="age" value="">
+                            <input type="number" id="age" name="age" value="" required>
                         </div>
                         <div class="form-group">
-                            <label for="year">ชั้นปี</label>
-                            <input type="number" id="year" name="year" value="">
+                            <label for="year">ปีการศึกษา</label>
+                            <select id="year" name="year">
+                                <option value="1" selected>ปี1</option>
+                                <option value="2">ปี2</option>
+                                <option value="3">ปี3</option>
+                                <option value="4">ปี4</option>
+                            </select>
                         </div>
                     </div>
                 </div>
-
                 <div class="form-grid-full-width">
                     <div class="form-group">
                         <label for="phone">เบอร์โทร</label>
-                        <input type="tel" id="phone" name="phone" value="">
+                        <input type="tel" id="phone" name="phone" value="" required>
                     </div>
                 </div>
-
+                <div class="form-grid-full-width">
+                    <div class="form-group">
+                        <label for="Faculty">คณะ</label>
+                        <select id="Faculty" name="Faculty_id" class="border rounded p-2 w-full" required>
+                            <option value="" disabled selected>-- กรุณาเลือกคณะ --</option>
+                            <option value="1">ศึกษาศาสตร์</option>
+                            <option value="2">วิทยาศาสตร์</option>
+                            <option value="3">วิทยาการสารสนเทศ</option>
+                            <option value="4">วิศวกรรมศาสตร์</option>
+                            <option value="5">คณะโลจิสติกส์</option>
+                            <option value="6">คณะบริหารธุรกิจและการจัดการ</option>
+                            <option value="7">คณะศิลปกรรมศาสตร์</option>
+                            <option value="8">คณะมนุษยศาสตร์และสังคมศาสตร์</option>
+                            <option value="9">คณะเภสัชศาสตร์</option>
+                            <option value="10">คณะพยาบาลศาสตร์</option>
+                            <option value="11">คณะแพทยศาสตร์</option>
+                            <option value="12">คณะสหเวชศาสตร์</option>
+                            <option value="13">คณะสาธารณสุขศาสตร์</option>
+                            <option value="14">คณะวิทยาศาสตร์การกีฬา</option>
+                            <option value="15">คณะดนตรีและการแสดง</option>
+                            <option value="16">คณะภูมิสารสนเทศศาสตร์</option>
+                            <option value="17">วิทยาลัยนานาชาติ</option>
+                            <!-- เพิ่มตาม faculty_id จริง -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Majors">สาขา</label>
+                        <select id="Majors" name="Majors_id" class="border rounded p-2 w-full" required>
+                            <option value="" disabled selected>-- กรุณาเลือกสาขา --</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="form-grid-full-width">
                     <div class="form-group">
                         <label for="gender">เพศ</label>
@@ -69,7 +105,7 @@
                         </select>
                     </div>
                 </div>
-                
+
                 <div class="form-group full-width">
                     <label for="characteristics">ลักษณะนิสัย/ความชอบ</label>
                     <select id="characteristics">
@@ -87,8 +123,154 @@
                 </div>
             </form>
         </div>
-
-
 </body>
+
+<script>
+    const majorsByFaculty = {
+        1: [ // คณะศึกษาศาสตร์
+            { id: 1, name: "ฟิสิกส์ศึกษา" },
+            { id: 2, name: "เทคโนโลยีดิจิทัลเพื่อการศึกษาและคอมพิวเตอร์ศึกษา" },
+            { id: 3, name: "สังคมศึกษา" },
+            { id: 4, name: "ศิลปศึกษา" },
+            { id: 5, name: "พลศึกษา" },
+            { id: 6, name: "การประถมศึกษา จิตวิทยาและแนะแนว" },
+            { id: 7, name: "การศึกษาปฐมวัย" },
+            { id: 8, name: "ชีววิทยา (ศึกษา)" },
+            { id: 9, name: "คณิตศาสตร์ (ศึกษา)" },
+            { id: 10, name: "เคมี (ศึกษา)" }
+        ],
+        2: [ // คณะวิทยาศาสตร์
+            { id: 11, name: "คณิตศาสตร์" },
+            { id: 12, name: "เคมี" },
+            { id: 13, name: "จุลชีววิทยา" },
+            { id: 14, name: "ชีวเคมี" },
+            { id: 15, name: "ชีววิทยา" },
+            { id: 16, name: "เทคโนโลยีชีวภาพ" },
+            { id: 17, name: "ฟิสิกส์" },
+            { id: 18, name: "วิทยาศาสตร์และเทคโนโลยีการอาหาร" },
+            { id: 19, name: "สถิติ" },
+            { id: 20, name: "วิทยาศาสตร์ข้อมูลและการวิเคราะห์" },
+            { id: 21, name: "วิทยาศาสตร์เชิงสร้างสรรค์และนวัตกรรม" }
+        ],
+        3: [ // วิทยาการสารสนเทศ
+            { id: 22, name: "วิทยาการคอมพิวเตอร์" },
+            { id: 23, name: "เทคโนโลยีสารสนเทศเพื่ออุตสาหกรรมดิจิทัล" },
+            { id: 24, name: "วิศวกรรมซอฟต์แวร์" },
+            { id: 25, name: "ปัญญาประดิษฐ์ประยุกต์และระบบอัจฉริยะ" }
+        ],
+        4: [ // วิศวกรรมศาสตร์
+            { id: 26, name: "วิศวกรรมเคมี" },
+            { id: 27, name: "วิศวกรรมอุตสาหการ" },
+            { id: 28, name: "วิศวกรรมไฟฟ้า" },
+            { id: 29, name: "วิศวกรรมโยธา" },
+            { id: 30, name: "วิศวกรรมเครื่องกล" }
+        ],
+        5: [
+            { id: 31, name: "การขนส่งและการสื่อสาร" },
+            { id: 32, name: "การขนส่งทางทะเล" },
+            { id: 33, name: "การจัดการการขนส่ง" },
+            { id: 34, name: "ธุรกิจระหว่างประเทศ" }
+        ],
+        6: [
+            { id: 35, name: "การเงิน" },
+            { id: 36, name: "การจัดการทรัพยากรบุคคล" },
+            { id: 37, name: "การตลาด" },
+            { id: 38, name: "ธุรกิจระหว่างประเทศ" },
+            { id: 39, name: "การจัดการธุรกิจและนวัตกรรม" }
+        ],
+        7: [
+            { id: 40, name: "ศิลปะเซรามิก" },
+            { id: 41, name: "ศิลปะภาพพิมพ์" },
+            { id: 42, name: "ศิลปะการสื่อสาร" },
+            { id: 43, name: "จิตรกรรมและการวาดเส้น" },
+            { id: 44, name: "การออกแบบอุตสาหกรรม" },
+            { id: 45, name: "ดนตรี" },
+            { id: 46, name: "ศิลปะการแสดง" }
+        ],
+        8: [
+            { id: 47, name: "การแสดง" },
+            { id: 48, name: "เกาหลี" },
+            { id: 49, name: "บริการสังคมและชุมชน" },
+            { id: 50, name: "นิเทศศาสตร์" },
+            { id: 51, name: "ภาพยนตร์" },
+            { id: 52, name: "ศาสนา" },
+            { id: 53, name: "ประชาสัมพันธ์และการโฆษณา" },
+            { id: 54, name: "ภาษาจีน" },
+            { id: 55, name: "ศึกษาการพัฒนา" },
+            { id: 56, name: "สื่อสารมวลชน" },
+            { id: 57, name: "ภาษาฝรั่งเศส" },
+            { id: 58, name: "วารสารศาสตร์" },
+            { id: 59, name: "ภูมิศาสตร์" },
+            { id: 60, name: "วิทยาการสารสนเทศ" },
+            { id: 61, name: "ศึกษาการสื่อสาร" },
+            { id: 62, name: "ปรัชญา" },
+            { id: 63, name: "ประวัติศาสตร์" },
+            { id: 64, name: "จิตวิทยา" },
+            { id: 65, name: "ภาษาอังกฤษ" },
+            { id: 66, name: "เศรษฐศาสตร์" }
+        ],
+        9: [
+            { id: 67, name: "เภสัชกรรม" },
+            { id: 68, name: "วิทยาศาสตร์ความงาม" }
+        ],
+        10: [
+            { id: 69, name: "พยาบาลศาสตร์" }
+        ],
+        11: [
+            { id: 70, name: "แพทยศาสตร์ (MD)" }
+        ],
+        12: [
+            { id: 71, name: "ชีวการแพทย์" },
+            { id: 72, name: "เทคโนโลยีทางการแพทย์" },
+            { id: 73, name: "กายภาพบำบัด" }
+        ],
+        13: [
+            { id: 74, name: "สาธารณสุข" },
+            { id: 75, name: "อาชีวอนามัยและสิ่งแวดล้อม" },
+            { id: 76, name: "การบริหารสาธารณสุข" },
+            { id: 77, name: "การศึกษาด้านสุขภาพ" }
+        ],
+        14: [
+            { id: 78, name: "วิทยาศาสตร์การออกกำลังกายและกีฬา" },
+            { id: 79, name: "สื่อสารมวลชนทางการกีฬา" },
+            { id: 80, name: "การจัดการและการสอนกีฬา" }
+        ],
+        15: [
+            { id: 81, name: "สาขาวิชาดนตรี" },
+            { id: 82, name: "สาขาวิชาศิลปะการแสดง" },
+            { id: 83, name: "สาขาวิชาการจัดการผลิตสื่อและวัฒนธรรมสร้างสรรค์" }
+        ],
+        16: [
+            { id: 84, name: "ภูมิศาสตร์" },
+            { id: 85, name: "วิทยาการคอมพิวเตอร์ (ภาครวมภูมิสารสนเทศ)" }
+        ],
+        17: [
+            { id: 86, name: "การจัดการธุรกิจระหว่างประเทศ" },
+            { id: 87, name: "การตลาดดิจิทัลและสร้างสรรค์" },
+            { id: 88, name: "การเงิน" },
+            { id: 89, name: "การจัดการธุรกิจโรงแรมและการท่องเที่ยวและไมซ์" },
+            { id: 90, name: "การจัดการโลจิสติกส์อัจฉริยะและห่วงโซ่อุปทาน" },
+            { id: 91, name: "การสื่อสารธุรกิจระดับโลกและสื่อสมัยใหม่" }
+        ]
+        // เพิ่มตามจริง
+    };
+
+    document.getElementById('Faculty').addEventListener('change', function () {
+        const FacultyId = this.value;
+        const majorSelect = document.getElementById('Majors');
+
+        // ล้างรายการเก่า
+        majorSelect.innerHTML = '<option value="" disabled selected>-- กรุณาเลือกสาขา --</option>';
+
+        if (majorsByFaculty[FacultyId]) {
+            majorsByFaculty[FacultyId].forEach(Majors => {
+                const option = document.createElement('option');
+                option.value = Majors.id;
+                option.textContent = Majors.name;
+                majorSelect.appendChild(option);
+            });
+        }
+    });
+</script>
 
 </html>
