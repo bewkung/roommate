@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <title>แก้ไขโปรไฟล์</title>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex flex-col">
+  <%- include('partials/homeheader') %>
+
+    <div class="flex justify-center mt-6">
+      <form action="/update/accounts" method="POST" enctype="multipart/form-data" class="bg-white p-8 rounded shadow-md w-full max-w-lg space-y-4">
+        <h2 class="text-xl font-bold text-center text-gray-700">แก้ไขข้อมูลส่วนตัว</h2>
+
+        <div>
+          <label class="block mb-1">ชื่อ</label>
+          <input type="text" name="first_name" value="<%= userData.first_name %>" required
+            class="w-full border px-3 py-2 rounded">
+        </div>
+
+        <div>
+          <label class="block mb-1">นามสกุล</label>
+          <input type="text" name="last_name" value="<%= userData.last_name %>" required
+            class="w-full border px-3 py-2 rounded">
+        </div>
+
+        <div>
+          <label class="block mb-1">ชื่อเล่น</label>
+          <input type="text" name="nickname" value="<%= userData.nickname %>" class="w-full border px-3 py-2 rounded">
+        </div>
+
+        <div>
+          <label class="block mb-1">เบอร์โทร</label>
+          <input type="text" name="phone" value="<%= userData.phone %>" class="w-full border px-3 py-2 rounded">
+        </div>
+
+        <div>
+          <label class="block mb-1">ลักษณะนิสัย</label>
+          <input type="text" name="per_description" value="<%= userData.per_description %>" class="w-full border px-3 py-2 rounded">
+        </div>
+
+        <div>
+          <label class="block mb-1 font-semibold">อัปโหลดรูปภาพ</label>
+          <input  type="file" name="image" class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+
+
+        <div class="text-center">
+          <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">บันทึก</button>
+          <a href="/profile" class="ml-4 text-gray-500 underline">ยกเลิก</a>
+        </div>
+      </form>
+    </div>
+
+</body>
+
+</html>

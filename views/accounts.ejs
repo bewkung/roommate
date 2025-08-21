@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="th">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>ข้อมูลผู้ใช้</title>
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/header.css">
     <link rel="stylesheet" href="css/accounts.css">
+    <title>ข้อมูลผู้ใช้</title>
 </head>
 
 <body>
@@ -17,7 +16,7 @@
             <form action="/accounts" method="POST" enctype="multipart/form-data">
                 <div class="profile-header">
                     <div class="profile-image-container flex flex-col items-center text-center">
-                        <input type="file" name="profileImage" accept="image/*">
+                        <input type="file" name="image">
                     </div>
                     <div class="form-grid">
                         <div class="form-group">
@@ -79,7 +78,7 @@
                             <option value="15">คณะดนตรีและการแสดง</option>
                             <option value="16">คณะภูมิสารสนเทศศาสตร์</option>
                             <option value="17">วิทยาลัยนานาชาติ</option>
-                            <!-- เพิ่มตาม faculty_id จริง -->
+                            
                         </select>
                     </div>
                     <div class="form-group">
@@ -95,6 +94,7 @@
                         <select id="gender" name="gender">
                             <option value="ชาย" selected>ชาย</option>
                             <option value="หญิง">หญิง</option>
+                            <option value="LGBTQ">LGBTQ</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -107,20 +107,20 @@
                 </div>
 
                 <div class="form-group full-width">
-                    <label for="characteristics">ลักษณะนิสัย/ความชอบ</label>
-                    <select id="characteristics">
+                    <label for="Personality">ลักษณะนิสัย/ความชอบ</label>
+                    <select id="Personality" name="Personality_id">
                         <option value="" disabled selected>เลือกหรือไม่เลือกก็ได้</option>
-                        <option value="ชอบอ่านหนังสือ">ชอบอ่านหนังสือ</option>
-                        <option value="ชอบเล่นกีฬา">ชอบเล่นกีฬา</option>
-                        <option value="ชอบดูหนัง">ชอบดูหนัง</option>
-                        <option value="ชอบฟังเพลง">ชอบฟังเพลง</option>
+                        <option value="1">ชอบอ่านหนังสือ</option>
+                        <option value="2">ชอบเล่นกีฬา</option>
+                        <option value="3">ชอบดูหนัง</option>
+                        <option value="4">ชอบฟังเพลง</option>
                     </select>
-                </div>
+                </div> 
 
                 <div class="button-group">
                     <button class="save-button" type="submit">บันทึกข้อมูล</button>
-                    <button class="edit-button" type="submit">แก้ไขข้อมูล</button>
-                </div>
+                </div> 
+
             </form>
         </div>
 </body>
