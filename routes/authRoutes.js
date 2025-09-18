@@ -1,14 +1,6 @@
-// const express = require("express");
-// const router = express.Router();
-// const AuthController = require("../controllers/AuthController");
-
-// router.post("/login", AuthController.login);
-
-
-// module.exports = router;
-
 const express = require("express");
 const router = express.Router();
+const {isAuthenticated} = require("../middleware/authMiddleware");
 const AuthController = require("../controllers/AuthController");
 
 router.get("/login", AuthController.showLogin);

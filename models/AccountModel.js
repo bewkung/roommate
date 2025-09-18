@@ -1,7 +1,9 @@
 const pool = require("../config/database");
 const cloudinary = require("../config/cloudinary");
 
+
 const Account = {
+
   // ดึงข้อมูลโปรไฟล์จาก Register_id
   findByRegisterId: async (Register_id) => {
     const [rows] = await pool.execute(
@@ -9,7 +11,7 @@ const Account = {
         a.*, 
         f.faculty_name, 
         m.majors_name,
-        GROUP_CONCAT(p.description SEPARATOR ', ') AS personalities
+        GROUP_CONCAT(p.description SEPARATOR ', ') AS Personalitiy
       FROM Accounts a
       LEFT JOIN Faculty f ON a.Faculty_id = f.faculty_id
       LEFT JOIN Majors m ON a.Majors_id = m.majors_id
@@ -20,9 +22,9 @@ const Account = {
       LIMIT 1`,
       [Register_id]
     );
-    return rows[0] || null;
+    return rows.length > 0 ? rows[0] : null;
   },
-
+ //สร้าง Account แบบง่าย
   create: async (data) => {
     const { Register_id, name, age, Faculty_id, Majors_id, image } = data;
     const [result] = await pool.execute(
@@ -32,7 +34,7 @@ const Account = {
     );
     return result.insertId;
   },
-
+//อัพเดท Account
   update: async (Accounts_id, data) => {
     const { name, age, Faculty_id, Majors_id, image } = data;
     await pool.execute(
@@ -40,9 +42,42 @@ const Account = {
       [name, age, Faculty_id, Majors_id, image, Accounts_id]
     );
     return true;
+  },
+// เช็คว่ามี Account แล้วหรือยัง
+  queryaccount: async(regisId) => {
+    const [result] = await pool.query(`SELECT * FROM Accounts WHERE Register_id = ? LIMIT 1`,[regisId]);
+    return result;
+  },
+//สร้าง Account
+  insertaccounts: async(first_name, last_name, nickname, age, phone, status, gender, student_id, year, secure_url, Register_id, Faculty_id, Majors_id) => {
+    const sql =  `INSERT INTO Accounts
+        (first_name, last_name, nickname, age, phone, status, gender, student_id, year, image, Register_id, Faculty_id, Majors_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    const [result] = await pool.query(sql, [
+        first_name || null,
+        last_name || null,
+        nickname || null,
+        age || null,
+        phone || null,
+        status || null,
+        gender || null,
+        student_id || null,
+        year || null,
+        secure_url,
+        Register_id,
+        Faculty_id,
+        Majors_id,
+      ]);
+      return result;
   }
+
 };
 
+
+
+
 module.exports = Account;
+
+
 
 

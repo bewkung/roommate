@@ -31,9 +31,36 @@
     <label><input type="radio" name="filter" value="other"> LGBTQ+</label>
 </div>
 
-<img src="">
 
-<!-- Add JavaScript for Search Form Validation
+<div class="container mx-auto mt-6">
+  <h2 class="text-xl font-bold mb-4">ผู้ใช้ทั้งหมด</h2>
+  
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <% accounts.forEach(user => { %>
+      <div class="bg-white shadow-md rounded-lg p-4">
+        <img src="<%= user.image %>" alt="profile" class="w-24 h-24 rounded-full mx-auto">
+        <h3 class="text-lg font-semibold text-center mt-2">
+          <%= user.first_name %> <%= user.last_name %>
+        </h3>
+        <p class="text-sm text-gray-600 text-center">(<%= user.nickname %>)</p>
+        <p class="text-sm text-gray-500 text-center"><%= user.faculty_name %> - <%= user.majors_name %></p>
+        <p class="text-sm text-gray-500 text-center">นิสัย: <%= user.Personality || "-" %></p>
+        
+        <% if (user.Accounts_id !== userData.Accounts_id) { %>
+          <!-- ไม่ให้กดจับคู่กับตัวเอง -->
+          <form action="/match/<%= user.Accounts_id %>" method="post" class="text-center mt-3">
+            <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+              จับคู่
+            </button>
+          </form>
+        <% } %>
+      </div>
+    <% }) %>
+  </div>
+</div>
+
+
+
 <script>
     // ทำการตรวจสอบช่องค้นหาทุกครั้งที่ผู้ใช้พิมพ์ข้อมูล
     document.getElementById('search-input').addEventListener('input', function() {
@@ -58,12 +85,9 @@
         return true; // ส่งฟอร์มหากมีข้อมูล
     }
 
-</script> -->
+</script>
 
     
-
-    
-
 
 </body>
 </html>

@@ -2,20 +2,17 @@ const cloudinary = require("../config/cloudinary");
 const Account = require("../models/AccountModel");
 const pool = require("../config/database");
 
-//แสดงผู้ใช้ถ้ามีข้อมูลแล้วให้ไปแสดงหน้า profile
+//เช็คว่าผู้ใช้ถ้ามีข้อมูลแล้วให้ไปแสดงหน้า profile
 exports.getAccount = async (req, res) => {
   const Register_id = req.session.user?.Register_id;
   if (!Register_id) {
     return res.status(401).send("กรุณาเข้าสู่ระบบก่อน");
   }
   try {
-    const [rows] = await pool.execute(
-      `SELECT * FROM Accounts WHERE Register_id = ? LIMIT 1`,
-      [Register_id]
-    );
-    if (rows.length > 0) {
+    const [rows] = await Account.queryaccount(Register_id);
+    if (rows) {
       // ถ้ามีข้อมูลแล้ว → ไปหน้าโปรไฟล์
-      return res.redirect("/profile");
+      return res.redirect("/home");
     }
     // ถ้ายังไม่มีข้อมูล → แสดงหน้าเพิ่มข้อมูล
     return res.render("accounts", { userData: null });
@@ -43,7 +40,7 @@ exports.createAccount = async (req, res) => {
       Majors_id,
       status,
       Personality_id,
-    } = req.body;
+    } = req.body; 
 
     const Register_id = req.session.user?.Register_id;
     if (!Register_id) return res.status(401).send("กรุณาเข้าสู่ระบบก่อน");
@@ -64,29 +61,17 @@ exports.createAccount = async (req, res) => {
 
     const secure_url = result.secure_url;
 
-    // insert Accounts
-    const [query] = await pool.execute(
-      `INSERT INTO Accounts
-        (first_name, last_name, nickname, age, phone, status, gender, student_id, year, image, Register_id, Faculty_id, Majors_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        first_name || null,
-        last_name || null,
-        nickname || null,
-        age || null,
-        phone || null,
-        status || null,
-        gender || null,
-        student_id || null,
-        year || null,
-        secure_url,
-        Register_id,
-        Faculty_id,
-        Majors_id,
-      ]
-    );
-    const Accounts_id = query.insertId;
+    const accounts = await Account.insertaccounts(first_name, last_name, nickname, age, phone, status, gender, student_id, year, secure_url, Register_id, Faculty_id, Majors_id);
 
+    const Accounts_id = accounts.insertId;
+  
+    if (Personality_id && Personality_id.length > 0) {
+  // ลบเก่าก่อนกันซ้ำ
+  await pool.execute(
+    "DELETE FROM Accounts_has_Personality WHERE Accounts_id = ?",
+    [Accounts_id]
+    );
+  }
     // personality
     if (Personality_id) {
       await pool.execute(
@@ -95,7 +80,7 @@ exports.createAccount = async (req, res) => {
       );
     }
 
-    return res.redirect("/profile");
+    return res.redirect("/home");
   } catch (error) {
     console.error("Create account error:", error);
     return res.status(500).json({
@@ -105,10 +90,8 @@ exports.createAccount = async (req, res) => {
   }
 };
 
-
-
-
 // ---------------- Profile ----------------
+//แสดงหน้าโปร์ไฟล์
 exports.getProfile = async (req, res) => {
   try {
     const Register_id = req.session.user?.Register_id;
@@ -145,7 +128,7 @@ exports.showEditProfile = async (req, res) => {
     res.render("edit-profile", { userData: account });
   } catch (err) {
     console.error("Show edit profile error:", err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).send("Internal server error");
   }
 };
 
@@ -156,27 +139,34 @@ exports.updateProfile = async (req, res) => {
     if (!Register_id) return res.status(401).send("กรุณาเข้าสู่ระบบก่อน");
 
     const { first_name, last_name, nickname, phone } = req.body;
-    let secure_url;
+     let secure_url = null;
 
     // ถ้ามีการอัพโหลดไฟล์ใหม่
     if (req.file) {
       const fileBuffer = req.file.buffer;
       const base64Image = fileBuffer.toString("base64");
       const dataUri = `data:${req.file.mimetype};base64,${base64Image}`;
-
       const result = await cloudinary.uploader.upload(dataUri, {
         folder: "Student-images",
         public_id: `Student-${Date.now()}`
       });
-
       secure_url = result.secure_url;
     }
 
+    // const accounts = await Account.update(first_name ,last_name  ,nickname ,phone , image=COALESCE);
+
     await pool.execute(
-      `UPDATE Accounts 
+       `UPDATE Accounts 
        SET first_name=?, last_name=?, nickname=?, phone=?, image=COALESCE(?, image)
        WHERE Register_id=?`,
-      [first_name, last_name, nickname, phone, secure_url, Register_id]
+      [
+        first_name ?? null,
+        last_name ?? null,
+        nickname ?? null,
+        phone ?? null,
+        secure_url,
+        Register_id
+      ]
     );
 
     req.flash("success", "อัพเดทข้อมูลเรียบร้อยแล้ว");

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>โพสต์ของฉัน</h1>
+     <div class="flex justify-center mb-4">
+                    <% if (post.image) { %>
+                        <img src="<%= post.image %>" alt="Profile"
+                            class="w-32 h-32 rounded-full object-cover border-4 border-blue-500">
+                        <% } else { %>
+                            <div
+                                class="w-32 h-32 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-sm border-4 border-gray-400">
+                                ยังไม่มีรูปโปรไฟล์
+                            </div>
+                            <% } %>
+                </div>
+    <p><strong>ชื่อเล่น:</strong> <%= post.nickname %></p>
+    <p><strong>อายุ:</strong> <%= post.age %></p>
+    <p><strong>ลักษณะนิสัย:</strong> <%= post.personalities %></p>
+    <p><strong>เพศ:</strong> <%= post.gender %> </p>
+
+    <% if (post.status === "has_room") { %>
+    <p><strong>โพสต์:</strong> <%= post.content %></p>
+    <% } else { %>
+    <p class="text-gray-500">ยังไม่มีห้อง — แสดงเฉพาะข้อมูลส่วนตัว</p>
+    <% } %>
+  </body>
+</html>
